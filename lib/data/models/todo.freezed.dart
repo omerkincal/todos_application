@@ -20,7 +20,7 @@ Todo _$TodoFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Todo {
-  String get uuid => throw _privateConstructorUsedError;
+  int get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   bool? get isCompleted => throw _privateConstructorUsedError;
@@ -38,7 +38,7 @@ abstract class $TodoCopyWith<$Res> {
       _$TodoCopyWithImpl<$Res, Todo>;
   @useResult
   $Res call(
-      {String uuid,
+      {int id,
       String title,
       String description,
       bool? isCompleted,
@@ -59,7 +59,7 @@ class _$TodoCopyWithImpl<$Res, $Val extends Todo>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? uuid = null,
+    Object? id = null,
     Object? title = null,
     Object? description = null,
     Object? isCompleted = freezed,
@@ -67,10 +67,10 @@ class _$TodoCopyWithImpl<$Res, $Val extends Todo>
     Object? dueDate = null,
   }) {
     return _then(_value.copyWith(
-      uuid: null == uuid
-          ? _value.uuid
-          : uuid // ignore: cast_nullable_to_non_nullable
-              as String,
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -103,7 +103,7 @@ abstract class _$$TodoImplCopyWith<$Res> implements $TodoCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String uuid,
+      {int id,
       String title,
       String description,
       bool? isCompleted,
@@ -121,7 +121,7 @@ class __$$TodoImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? uuid = null,
+    Object? id = null,
     Object? title = null,
     Object? description = null,
     Object? isCompleted = freezed,
@@ -129,10 +129,10 @@ class __$$TodoImplCopyWithImpl<$Res>
     Object? dueDate = null,
   }) {
     return _then(_$TodoImpl(
-      uuid: null == uuid
-          ? _value.uuid
-          : uuid // ignore: cast_nullable_to_non_nullable
-              as String,
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -161,7 +161,7 @@ class __$$TodoImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$TodoImpl implements _Todo {
   const _$TodoImpl(
-      {required this.uuid,
+      {required this.id,
       required this.title,
       required this.description,
       this.isCompleted,
@@ -172,7 +172,7 @@ class _$TodoImpl implements _Todo {
       _$$TodoImplFromJson(json);
 
   @override
-  final String uuid;
+  final int id;
   @override
   final String title;
   @override
@@ -186,7 +186,7 @@ class _$TodoImpl implements _Todo {
 
   @override
   String toString() {
-    return 'Todo(uuid: $uuid, title: $title, description: $description, isCompleted: $isCompleted, priority: $priority, dueDate: $dueDate)';
+    return 'Todo(id: $id, title: $title, description: $description, isCompleted: $isCompleted, priority: $priority, dueDate: $dueDate)';
   }
 
   @override
@@ -194,7 +194,7 @@ class _$TodoImpl implements _Todo {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$TodoImpl &&
-            (identical(other.uuid, uuid) || other.uuid == uuid) &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
                 other.description == description) &&
@@ -208,7 +208,7 @@ class _$TodoImpl implements _Todo {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, uuid, title, description, isCompleted, priority, dueDate);
+      runtimeType, id, title, description, isCompleted, priority, dueDate);
 
   @JsonKey(ignore: true)
   @override
@@ -226,7 +226,7 @@ class _$TodoImpl implements _Todo {
 
 abstract class _Todo implements Todo {
   const factory _Todo(
-      {required final String uuid,
+      {required final int id,
       required final String title,
       required final String description,
       final bool? isCompleted,
@@ -236,7 +236,7 @@ abstract class _Todo implements Todo {
   factory _Todo.fromJson(Map<String, dynamic> json) = _$TodoImpl.fromJson;
 
   @override
-  String get uuid;
+  int get id;
   @override
   String get title;
   @override

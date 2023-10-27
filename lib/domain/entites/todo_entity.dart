@@ -6,7 +6,7 @@ part 'todo_entity.freezed.dart';
 @freezed
 class TodoEntity with _$TodoEntity {
   const factory TodoEntity({
-    required String uuid,
+    required int id,
     required String title,
     required String description,
     bool? isCompleted,

@@ -7,7 +7,7 @@ part of 'todo.dart';
 // **************************************************************************
 
 _$TodoImpl _$$TodoImplFromJson(Map<String, dynamic> json) => _$TodoImpl(
-      uuid: json['uuid'] as String,
+      id: json['id'] as int,
       title: json['title'] as String,
       description: json['description'] as String,
       isCompleted: json['isCompleted'] as bool?,
@@ -17,7 +17,7 @@ _$TodoImpl _$$TodoImplFromJson(Map<String, dynamic> json) => _$TodoImpl(
 
 Map<String, dynamic> _$$TodoImplToJson(_$TodoImpl instance) =>
     <String, dynamic>{
-      'uuid': instance.uuid,
+      'id': instance.id,
       'title': instance.title,
       'description': instance.description,
       'isCompleted': instance.isCompleted,
