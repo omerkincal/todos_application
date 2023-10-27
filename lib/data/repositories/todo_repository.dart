@@ -11,14 +11,23 @@ class TodoRepository implements TodoRepositoryInterface {
 
   @override
   Future<void> saveTodo(TodoEntity todo) async {
-    final todoModel = Todo(
-      uuid: todo.uuid,
-      title: todo.title,
-      description: todo.description,
-      isCompleted: todo.isCompleted,
-      priority: todo.priority,
-      dueDate: todo.dueDate,
-    );
+
+
+    /// TODO -FB : 
+    // final todoModel = Todo(
+    //   uuid: todo.uuid,
+    //   title: todo.title,
+    //   description: todo.description,
+    //   isCompleted: todo.isCompleted,
+    //   priority: todo.priority,
+    //   dueDate: todo.dueDate,
+
+    // );
+
+    /// USE THIS 
+    final todoModel = todo.getModelFromEntity();
+
+
     await _hiveDataSource.saveData(todo.uuid, todoModel);
   }
 

@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-class HiveDataSource {
+final class HiveDataSource {
   Future<void> saveData(String key, dynamic data) async {
     final box = await Hive.openBox('todoBox');
     await box.put(key, data);
