@@ -9,7 +9,7 @@ class TodoEntity with _$TodoEntity {
     required int id,
     required String title,
     required String description,
-    bool? isCompleted,
+    required bool isCompleted,
     required int priority,
     required DateTime dueDate,
   }) = _TodoEntity;

@@ -6,7 +6,7 @@ class SaveTodoUseCase {
 
   SaveTodoUseCase(this._repository);
 
-  Future<void> execute(TodoEntity todo) async {
-    await _repository.saveTodo(todo);
+  void execute(TodoEntity todo) {
+    return _repository.saveTodo(todo);
   }
 }

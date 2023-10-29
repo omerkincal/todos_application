@@ -28,12 +28,10 @@ class TodoController extends ChangeNotifier {
   TodoEntity? get todo => _todo;
 
   void getTodos() {
-    _getTodosUseCase.execute();
-    notifyListeners();
+    return _getTodosUseCase.execute();
   }
 
-  Future<void> saveTodo(TodoEntity todo) async {
-    await _saveTodoUseCase.execute(todo);
-    notifyListeners();
+  void saveTodo(TodoEntity todo) {
+    return _saveTodoUseCase.execute(todo);
   }
 }

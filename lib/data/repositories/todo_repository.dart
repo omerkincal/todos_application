@@ -7,8 +7,10 @@ import '../../domain/repositeries/todo_repository_interface.dart';
 class TodoRepository implements TodoRepositoryInterface {
   final HiveDataSource _hiveDataSource = HiveDataSource();
 
+// final todoModel = todo.getModelFromEntity();
+
   @override
-  Future<void> saveTodo(TodoEntity todo) async {
+  void saveTodo(TodoEntity todo) {
     final todoModel = Todo(
       id: todo.id,
       title: todo.title,
@@ -22,7 +24,7 @@ class TodoRepository implements TodoRepositoryInterface {
   }
 
   @override
-  Future<void> getTodos() async {
+  void getTodos() {
     _hiveDataSource.loadData();
   }
 }

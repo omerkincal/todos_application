@@ -6,6 +6,6 @@ class GetTodosUseCase {
   GetTodosUseCase(this._repository);
 
   void execute() {
-    _repository.getTodos();
+    return _repository.getTodos();
   }
 }

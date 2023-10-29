@@ -7,23 +7,32 @@ class HiveDataSource {
       id: 1,
       title: "Alışveriş",
       description: "markete gitmeyi unutma",
+      isCompleted: false,
       priority: 1,
       dueDate: DateTime.now());
+
   Todo todo2 = Todo(
       id: 1,
       title: "Spor",
       description: "spor yapmayı unutma",
+      isCompleted: false,
       priority: 2,
       dueDate: DateTime.now());
+
+  // uygulama ilk çalıştığında gözükecek örnek todolar
   void createInitialData() {
-    toDoList.add(todo1);
-    toDoList.add(todo2);
+    toDoList = [
+      todo1,
+      todo2,
+    ];
   }
 
+  // güncel todoları çek
   void loadData() {
     toDoList = _myBox.get('TODOLIST');
   }
 
+  // yeni todolar ekler veya var olan todoyu günceller
   void updateDatabase() {
     _myBox.put('TODOLIST', toDoList);
   }

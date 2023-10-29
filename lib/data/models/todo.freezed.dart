@@ -21,11 +21,17 @@ Todo _$TodoFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Todo {
   int get id => throw _privateConstructorUsedError;
+  set id(int value) => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
+  set title(String value) => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
-  bool? get isCompleted => throw _privateConstructorUsedError;
+  set description(String value) => throw _privateConstructorUsedError;
+  bool get isCompleted => throw _privateConstructorUsedError;
+  set isCompleted(bool value) => throw _privateConstructorUsedError;
   int get priority => throw _privateConstructorUsedError;
+  set priority(int value) => throw _privateConstructorUsedError;
   DateTime get dueDate => throw _privateConstructorUsedError;
+  set dueDate(DateTime value) => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -41,7 +47,7 @@ abstract class $TodoCopyWith<$Res> {
       {int id,
       String title,
       String description,
-      bool? isCompleted,
+      bool isCompleted,
       int priority,
       DateTime dueDate});
 }
@@ -62,7 +68,7 @@ class _$TodoCopyWithImpl<$Res, $Val extends Todo>
     Object? id = null,
     Object? title = null,
     Object? description = null,
-    Object? isCompleted = freezed,
+    Object? isCompleted = null,
     Object? priority = null,
     Object? dueDate = null,
   }) {
@@ -79,10 +85,10 @@ class _$TodoCopyWithImpl<$Res, $Val extends Todo>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
-      isCompleted: freezed == isCompleted
+      isCompleted: null == isCompleted
           ? _value.isCompleted
           : isCompleted // ignore: cast_nullable_to_non_nullable
-              as bool?,
+              as bool,
       priority: null == priority
           ? _value.priority
           : priority // ignore: cast_nullable_to_non_nullable
@@ -106,7 +112,7 @@ abstract class _$$TodoImplCopyWith<$Res> implements $TodoCopyWith<$Res> {
       {int id,
       String title,
       String description,
-      bool? isCompleted,
+      bool isCompleted,
       int priority,
       DateTime dueDate});
 }
@@ -124,7 +130,7 @@ class __$$TodoImplCopyWithImpl<$Res>
     Object? id = null,
     Object? title = null,
     Object? description = null,
-    Object? isCompleted = freezed,
+    Object? isCompleted = null,
     Object? priority = null,
     Object? dueDate = null,
   }) {
@@ -141,10 +147,10 @@ class __$$TodoImplCopyWithImpl<$Res>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
-      isCompleted: freezed == isCompleted
+      isCompleted: null == isCompleted
           ? _value.isCompleted
           : isCompleted // ignore: cast_nullable_to_non_nullable
-              as bool?,
+              as bool,
       priority: null == priority
           ? _value.priority
           : priority // ignore: cast_nullable_to_non_nullable
@@ -160,11 +166,11 @@ class __$$TodoImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$TodoImpl implements _Todo {
-  const _$TodoImpl(
+  _$TodoImpl(
       {required this.id,
       required this.title,
       required this.description,
-      this.isCompleted,
+      required this.isCompleted,
       required this.priority,
       required this.dueDate});
 
@@ -172,43 +178,22 @@ class _$TodoImpl implements _Todo {
       _$$TodoImplFromJson(json);
 
   @override
-  final int id;
+  int id;
   @override
-  final String title;
+  String title;
   @override
-  final String description;
+  String description;
   @override
-  final bool? isCompleted;
+  bool isCompleted;
   @override
-  final int priority;
+  int priority;
   @override
-  final DateTime dueDate;
+  DateTime dueDate;
 
   @override
   String toString() {
     return 'Todo(id: $id, title: $title, description: $description, isCompleted: $isCompleted, priority: $priority, dueDate: $dueDate)';
   }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$TodoImpl &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.title, title) || other.title == title) &&
-            (identical(other.description, description) ||
-                other.description == description) &&
-            (identical(other.isCompleted, isCompleted) ||
-                other.isCompleted == isCompleted) &&
-            (identical(other.priority, priority) ||
-                other.priority == priority) &&
-            (identical(other.dueDate, dueDate) || other.dueDate == dueDate));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(
-      runtimeType, id, title, description, isCompleted, priority, dueDate);
 
   @JsonKey(ignore: true)
   @override
@@ -225,28 +210,34 @@ class _$TodoImpl implements _Todo {
 }
 
 abstract class _Todo implements Todo {
-  const factory _Todo(
-      {required final int id,
-      required final String title,
-      required final String description,
-      final bool? isCompleted,
-      required final int priority,
-      required final DateTime dueDate}) = _$TodoImpl;
+  factory _Todo(
+      {required int id,
+      required String title,
+      required String description,
+      required bool isCompleted,
+      required int priority,
+      required DateTime dueDate}) = _$TodoImpl;
 
   factory _Todo.fromJson(Map<String, dynamic> json) = _$TodoImpl.fromJson;
 
   @override
   int get id;
+  set id(int value);
   @override
   String get title;
+  set title(String value);
   @override
   String get description;
+  set description(String value);
   @override
-  bool? get isCompleted;
+  bool get isCompleted;
+  set isCompleted(bool value);
   @override
   int get priority;
+  set priority(int value);
   @override
   DateTime get dueDate;
+  set dueDate(DateTime value);
   @override
   @JsonKey(ignore: true)
   _$$TodoImplCopyWith<_$TodoImpl> get copyWith =>

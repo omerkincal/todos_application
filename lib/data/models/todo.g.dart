@@ -10,7 +10,7 @@ _$TodoImpl _$$TodoImplFromJson(Map<String, dynamic> json) => _$TodoImpl(
       id: json['id'] as int,
       title: json['title'] as String,
       description: json['description'] as String,
-      isCompleted: json['isCompleted'] as bool?,
+      isCompleted: json['isCompleted'] as bool,
       priority: json['priority'] as int,
       dueDate: DateTime.parse(json['dueDate'] as String),
     );

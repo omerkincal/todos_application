@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../../../data/datasources/local/hive_datasources.dart';
-import '../../../data/repositories/todo_repository.dart';
-import '../../../domain/entites/todo_entity.dart';
-import '../../../locator/get_it_locator.dart';
 import '../../blocs/theme_provider.dart';
-import '../../controllers/todo_controller.dart';
+import '../components/todo_tile.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -16,19 +14,34 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  TodoController _todoController = TodoController(
-    TodoRepository(),
-    locator<HiveDataSource>(), // HiveDataSource'ı locator üzerinden al
-  );
+  final _myBox = Hive.box('todoBox');
+
+  DateTime? selectedDate;
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  int? priority;
+
+  HiveDataSource db = HiveDataSource();
 
   @override
   void initState() {
+    if (_myBox.get('TODOLIST') == null) {
+      db.createInitialData();
+    } else {
+      db.loadData();
+    }
     super.initState();
-    _todoController = TodoController(
-      TodoRepository(),
-      locator<HiveDataSource>(),
-    );
-    _todoController.getTodos();
+  }
+
+  deleteTheTask(int index) {
+    db.toDoList.removeAt(index);
+    db.updateDatabase();
+  }
+
+  void checkBoxChanged(int index) {
+    setState(() {
+      db.toDoList[index].isCompleted = !db.toDoList[index].isCompleted;
+    });
   }
 
   @override
@@ -49,36 +62,46 @@ class _HomeViewState extends State<HomeView> {
           )
         ],
       ),
-      body: Column(
-        children: [
-          // Todo listesini gösterir
-          if (_todoController.todo != null)
-            ListTile(
-              title: Text(_todoController.todo!.title),
-              subtitle: Text(_todoController.todo!.description),
-            ),
-          // Yeni bir todo eklemek için bir TextField ve bir button
-          TextField(
-            controller: TextEditingController(),
-            decoration: const InputDecoration(labelText: 'Yeni Todo Başlığı'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              // Yeni todo eklemek için saveTodo metodunu kullanma
-              _todoController.saveTodo(
-                TodoEntity(
-                  id: 1, // Yeni bir todo için örnek bir ID
-                  title: 'Yeni Todo Başlığı',
-                  description: 'Yeni Todo Açıklaması',
-                  priority: 1,
-                  dueDate: DateTime.now(),
-                ),
-              );
-            },
-            child: const Text('Yeni Todo Ekle'),
-          ),
-        ],
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () {},
       ),
+      body: db.toDoList.isEmpty
+          ? const Center(
+              child: Text('Yapılacak iş kalmadı'),
+            )
+          : ListView.builder(
+              itemCount: db.toDoList.length,
+              itemBuilder: (context, index) {
+                return Dismissible(
+                  //confirmDismiss: ,
+                  onDismissed: (direction) {
+                    // if (direction == DismissDirection.endToStart) {
+                    deleteTheTask(index);
+                    // }
+                    //  else if (direction == DismissDirection.startToEnd) {
+                    //   updateTheTask(index);
+                    // }
+                  },
+                  background: Container(
+                    color: Colors.redAccent,
+                    alignment: Alignment.centerRight,
+                    padding: const EdgeInsets.all(25),
+                    margin: const EdgeInsets.all(25),
+                    child: const Icon(Icons.delete),
+                  ),
+
+                  key: Key(db.toDoList[index].toString()),
+                  child: ToDoTile(
+                    taskName: db.toDoList[index].title,
+                    isTaskCompleted: db.toDoList[index].isCompleted,
+                    onChanged: (value) {
+                      checkBoxChanged(index);
+                    },
+                  ),
+                );
+              },
+            ),
     );
   }
 }

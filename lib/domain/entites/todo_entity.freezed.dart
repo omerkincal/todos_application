@@ -19,7 +19,7 @@ mixin _$TodoEntity {
   int get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
-  bool? get isCompleted => throw _privateConstructorUsedError;
+  bool get isCompleted => throw _privateConstructorUsedError;
   int get priority => throw _privateConstructorUsedError;
   DateTime get dueDate => throw _privateConstructorUsedError;
 
@@ -38,7 +38,7 @@ abstract class $TodoEntityCopyWith<$Res> {
       {int id,
       String title,
       String description,
-      bool? isCompleted,
+      bool isCompleted,
       int priority,
       DateTime dueDate});
 }
@@ -59,7 +59,7 @@ class _$TodoEntityCopyWithImpl<$Res, $Val extends TodoEntity>
     Object? id = null,
     Object? title = null,
     Object? description = null,
-    Object? isCompleted = freezed,
+    Object? isCompleted = null,
     Object? priority = null,
     Object? dueDate = null,
   }) {
@@ -76,10 +76,10 @@ class _$TodoEntityCopyWithImpl<$Res, $Val extends TodoEntity>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
-      isCompleted: freezed == isCompleted
+      isCompleted: null == isCompleted
           ? _value.isCompleted
           : isCompleted // ignore: cast_nullable_to_non_nullable
-              as bool?,
+              as bool,
       priority: null == priority
           ? _value.priority
           : priority // ignore: cast_nullable_to_non_nullable
@@ -104,7 +104,7 @@ abstract class _$$TodoEntityImplCopyWith<$Res>
       {int id,
       String title,
       String description,
-      bool? isCompleted,
+      bool isCompleted,
       int priority,
       DateTime dueDate});
 }
@@ -123,7 +123,7 @@ class __$$TodoEntityImplCopyWithImpl<$Res>
     Object? id = null,
     Object? title = null,
     Object? description = null,
-    Object? isCompleted = freezed,
+    Object? isCompleted = null,
     Object? priority = null,
     Object? dueDate = null,
   }) {
@@ -140,10 +140,10 @@ class __$$TodoEntityImplCopyWithImpl<$Res>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
-      isCompleted: freezed == isCompleted
+      isCompleted: null == isCompleted
           ? _value.isCompleted
           : isCompleted // ignore: cast_nullable_to_non_nullable
-              as bool?,
+              as bool,
       priority: null == priority
           ? _value.priority
           : priority // ignore: cast_nullable_to_non_nullable
@@ -163,7 +163,7 @@ class _$TodoEntityImpl implements _TodoEntity {
       {required this.id,
       required this.title,
       required this.description,
-      this.isCompleted,
+      required this.isCompleted,
       required this.priority,
       required this.dueDate});
 
@@ -174,7 +174,7 @@ class _$TodoEntityImpl implements _TodoEntity {
   @override
   final String description;
   @override
-  final bool? isCompleted;
+  final bool isCompleted;
   @override
   final int priority;
   @override
@@ -217,7 +217,7 @@ abstract class _TodoEntity implements TodoEntity {
       {required final int id,
       required final String title,
       required final String description,
-      final bool? isCompleted,
+      required final bool isCompleted,
       required final int priority,
       required final DateTime dueDate}) = _$TodoEntityImpl;
 
@@ -228,7 +228,7 @@ abstract class _TodoEntity implements TodoEntity {
   @override
   String get description;
   @override
-  bool? get isCompleted;
+  bool get isCompleted;
   @override
   int get priority;
   @override
