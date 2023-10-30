@@ -12,7 +12,7 @@ class HiveDataSource {
       dueDate: DateTime.now());
 
   Todo todo2 = Todo(
-      id: 1,
+      id: 2,
       title: "Spor",
       description: "spor yapmayı unutma",
       isCompleted: false,

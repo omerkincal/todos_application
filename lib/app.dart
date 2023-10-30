@@ -15,7 +15,15 @@ class App extends StatelessWidget {
       title: 'T O D O S',
       themeMode: themeProvider.themeMode,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        primarySwatch: Colors.deepOrange,
+        primaryColor: Colors.deepOrange,
+        appBarTheme: const AppBarTheme(
+          color: Colors.deepOrange,
+          centerTitle: true,
+        ),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.deepOrange,
+        ),
         useMaterial3: true,
       ),
       darkTheme: ThemeData.dark(),

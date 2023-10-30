@@ -47,7 +47,11 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.deepOrange.shade300,
       appBar: AppBar(
+        title: const Text(
+          'T O D O',
+        ),
         actions: [
           IconButton(
             onPressed: () {
