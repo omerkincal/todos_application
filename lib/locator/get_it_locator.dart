@@ -7,7 +7,7 @@ class ServiceLocator {
 
   static Future<void> setup() async {
     await Hive.initFlutter();
-    await Hive.openBox('your_box_name'); // Box isimini değiştirebilirsiniz
+    await Hive.openBox('todoBox');
     locator.registerLazySingleton<HiveDataSource>(() => HiveDataSource());
   }
 }

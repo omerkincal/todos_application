@@ -3,7 +3,9 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../../../data/datasources/local/hive_datasources.dart';
+import '../../../locator/get_it_locator.dart';
 import '../../blocs/theme_provider.dart';
+import '../components/diolog_box.dart';
 import '../components/todo_tile.dart';
 
 class HomeView extends StatefulWidget {
@@ -16,31 +18,27 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   final _myBox = Hive.box('todoBox');
 
-  DateTime? selectedDate;
-  TextEditingController titleController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
-  int? priority;
-
-  HiveDataSource db = HiveDataSource();
+  final HiveDataSource _hiveService = ServiceLocator.locator<HiveDataSource>();
 
   @override
   void initState() {
     if (_myBox.get('TODOLIST') == null) {
-      db.createInitialData();
+      _hiveService.createInitialData();
     } else {
-      db.loadData();
+      _hiveService.loadData();
     }
     super.initState();
   }
 
   deleteTheTask(int index) {
-    db.toDoList.removeAt(index);
-    db.updateDatabase();
+    _hiveService.toDoList.removeAt(index);
+    _hiveService.updateDatabase();
   }
 
   void checkBoxChanged(int index) {
     setState(() {
-      db.toDoList[index].isCompleted = !db.toDoList[index].isCompleted;
+      _hiveService.toDoList[index].isCompleted =
+          !_hiveService.toDoList[index].isCompleted;
     });
   }
 
@@ -68,14 +66,21 @@ class _HomeViewState extends State<HomeView> {
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () {},
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return const DiologBox(); // Ya da DiologBox() widget'inizi burada çağırabilirsiniz.
+            },
+          );
+        },
       ),
-      body: db.toDoList.isEmpty
+      body: _hiveService.toDoList.isEmpty
           ? const Center(
               child: Text('Yapılacak iş kalmadı'),
             )
           : ListView.builder(
-              itemCount: db.toDoList.length,
+              itemCount: _hiveService.toDoList.length,
               itemBuilder: (context, index) {
                 return Dismissible(
                   //confirmDismiss: ,
@@ -95,10 +100,10 @@ class _HomeViewState extends State<HomeView> {
                     child: const Icon(Icons.delete),
                   ),
 
-                  key: Key(db.toDoList[index].toString()),
+                  key: Key(_hiveService.toDoList[index].toString()),
                   child: ToDoTile(
-                    taskName: db.toDoList[index].title,
-                    isTaskCompleted: db.toDoList[index].isCompleted,
+                    taskName: _hiveService.toDoList[index].title,
+                    isTaskCompleted: _hiveService.toDoList[index].isCompleted,
                     onChanged: (value) {
                       checkBoxChanged(index);
                     },

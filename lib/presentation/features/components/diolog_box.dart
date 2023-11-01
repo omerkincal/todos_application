@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:todos_application/data/datasources/local/hive_datasources.dart';
 import 'package:todos_application/data/models/todo.dart';
 
@@ -6,16 +7,7 @@ import '../../../locator/get_it_locator.dart';
 import 'my_button.dart';
 
 class DiologBox extends StatefulWidget {
-  final TextEditingController controller;
-  final VoidCallback onSave;
-  final VoidCallback onCancel;
-
-  const DiologBox({
-    super.key,
-    required this.controller,
-    required this.onSave,
-    required this.onCancel,
-  });
+  const DiologBox({super.key});
 
   @override
   State<DiologBox> createState() => _DiologBoxState();
@@ -25,6 +17,9 @@ class _DiologBoxState extends State<DiologBox> {
   final HiveDataSource _hiveService = ServiceLocator.locator<HiveDataSource>();
 
   DateTime selectedDate = DateTime.now();
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  TextEditingController priorityController = TextEditingController();
 
   Future<void> selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -49,9 +44,17 @@ class _DiologBoxState extends State<DiologBox> {
   //   db.updateDatabase();
   // }
 
-  void createNewTodo(Todo todo) {
-    todo.id = _hiveService.toDoList.length + 1;
-    _hiveService.toDoList.add(todo);
+  void createNewTodo() {
+    Todo newTodo = Todo(
+      id: _hiveService.toDoList.length + 1,
+      title: titleController.text,
+      description: descriptionController.text,
+      dueDate: selectedDate,
+      priority: 1,
+      isCompleted: false,
+    );
+    _hiveService.toDoList.add(newTodo);
+    _hiveService.updateDatabase();
   }
 
   @override
@@ -63,29 +66,55 @@ class _DiologBoxState extends State<DiologBox> {
         width: 300,
         child: Column(
           children: [
-            //get user input
+            //get inputs from user
             TextField(
-              controller: widget.controller,
+              controller: titleController,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 hintText: "What do you have to do?",
               ),
             ),
+            const SizedBox(height: 10),
+            TextField(
+              controller: descriptionController,
+              maxLines: null, // null kullanarak çoklu satır girişine izin verin
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Description',
+              ),
+            ),
 
-            TextButton(
-              onPressed: () async {
-                selectDate(context);
-              },
-              child: const Text('Son Tarih'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  DateFormat('yMd').format(selectedDate),
+                ),
+                MyButton(
+                  text: 'Son Tarih',
+                  onPressed: () async {
+                    selectDate(context);
+                  },
+                ),
+              ],
             ),
 
             //buttons save and cancel
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                MyButton(text: "Save", onPressed: widget.onSave),
+                MyButton(
+                    text: "Save",
+                    onPressed: () {
+                      createNewTodo();
+                    }),
                 const SizedBox(width: 10),
-                MyButton(text: "Cancel", onPressed: widget.onCancel),
+                MyButton(
+                  text: "Cancel",
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
               ],
             )
           ],
