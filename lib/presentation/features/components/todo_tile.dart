@@ -21,7 +21,7 @@ class ToDoTile extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor,
+          color: Theme.of(context).primaryColorDark,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(

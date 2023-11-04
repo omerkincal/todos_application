@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:todos_application/data/datasources/local/hive_datasources.dart';
+import 'package:todos_application/data/datasources/local/todos.dart';
 
-import '../../../data/datasources/local/hive_datasources.dart';
-import '../../../locator/get_it_locator.dart';
+import '../../../data/models/todo.dart';
 import '../../blocs/theme_provider.dart';
-import '../components/diolog_box.dart';
+import '../components/my_button.dart';
 import '../components/todo_tile.dart';
 
 class HomeView extends StatefulWidget {
@@ -16,36 +19,19 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  final _myBox = Hive.box('todoBox');
-
-  final HiveDataSource _hiveService = ServiceLocator.locator<HiveDataSource>();
+  final HiveDatabaseService _hiveDatabaseService = HiveDatabaseService();
 
   @override
-  void initState() {
-    if (_myBox.get('TODOLIST') == null) {
-      _hiveService.createInitialData();
-    } else {
-      _hiveService.loadData();
-    }
-    super.initState();
-  }
-
-  deleteTheTask(int index) {
-    _hiveService.toDoList.removeAt(index);
-    _hiveService.updateDatabase();
-  }
-
-  void checkBoxChanged(int index) {
-    setState(() {
-      _hiveService.toDoList[index].isCompleted =
-          !_hiveService.toDoList[index].isCompleted;
-    });
+  void dispose() {
+    // Hive.close();
+    Hive.box('todos').close();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.deepOrange.shade300,
+      backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
         title: const Text(
           'T O D O',
@@ -66,51 +52,163 @@ class _HomeViewState extends State<HomeView> {
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () {
+        onPressed: () async {
           showDialog(
             context: context,
-            builder: (BuildContext context) {
-              return const DiologBox(); // Ya da DiologBox() widget'inizi burada çağırabilirsiniz.
+            builder: (_) {
+              return addNewTodo();
             },
-          );
+          ); // Ya da DiologBox() widget'inizi burada çağırabilirsiniz.
         },
       ),
-      body: _hiveService.toDoList.isEmpty
-          ? const Center(
-              child: Text('Yapılacak iş kalmadı'),
-            )
-          : ListView.builder(
-              itemCount: _hiveService.toDoList.length,
-              itemBuilder: (context, index) {
-                return Dismissible(
-                  //confirmDismiss: ,
-                  onDismissed: (direction) {
-                    // if (direction == DismissDirection.endToStart) {
-                    deleteTheTask(index);
-                    // }
-                    //  else if (direction == DismissDirection.startToEnd) {
-                    //   updateTheTask(index);
-                    // }
-                  },
-                  background: Container(
-                    color: Colors.redAccent,
-                    alignment: Alignment.centerRight,
-                    padding: const EdgeInsets.all(25),
-                    margin: const EdgeInsets.all(25),
-                    child: const Icon(Icons.delete),
-                  ),
-
-                  key: Key(_hiveService.toDoList[index].toString()),
-                  child: ToDoTile(
-                    taskName: _hiveService.toDoList[index].title,
-                    isTaskCompleted: _hiveService.toDoList[index].isCompleted,
-                    onChanged: (value) {
-                      checkBoxChanged(index);
-                    },
-                  ),
-                );
-              },
-            ),
+      body: ValueListenableBuilder<Box<Todo>>(
+        valueListenable: Boxes.getTodos().listenable(),
+        builder: (context, box, _) {
+          final todos = box.values.toList().cast<Todo>();
+          return buildContent(todos);
+        },
+      ),
     );
+  }
+
+  Widget addNewTodo() {
+    DateTime selectedDate = DateTime.now();
+    TextEditingController titleController = TextEditingController();
+    TextEditingController descriptionController = TextEditingController();
+    // TextEditingController priorityController = TextEditingController();
+
+    Future<void> selectDate(BuildContext context) async {
+      final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime.now(),
+        lastDate: DateTime(2101),
+      );
+      if (picked != null && picked != selectedDate) {
+        setState(() {
+          selectedDate = picked;
+        });
+      }
+    }
+
+    void createNewTodo() {
+      dynamic newTodo = Todo()
+        ..id = 1
+        ..description = descriptionController.text
+        ..title = titleController.text
+        ..dueDate = selectedDate
+        ..priority = 1
+        ..isCompleted = false;
+      _hiveDatabaseService.addNewTodo(newTodo);
+      Navigator.pop(context);
+    }
+
+    return AlertDialog(
+      backgroundColor: Theme.of(context).secondaryHeaderColor,
+      content: SizedBox(
+        height: 500,
+        width: 300,
+        child: Column(
+          children: [
+            //get inputs from user
+            TextField(
+              controller: titleController,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: "What do you have to do?",
+              ),
+            ),
+            const SizedBox(height: 10),
+            TextField(
+              controller: descriptionController,
+              maxLines: null, // null kullanarak çoklu satır girişine izin verin
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Description',
+              ),
+            ),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  DateFormat.yMMMMd('tr_TR').format(selectedDate),
+                ),
+                MyButton(
+                  text: 'Son Tarih',
+                  onPressed: () {
+                    selectDate(context);
+                  },
+                ),
+              ],
+            ),
+
+            //buttons save and cancel
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                MyButton(
+                    text: "Save",
+                    onPressed: () {
+                      createNewTodo();
+                    }),
+                const SizedBox(width: 10),
+                MyButton(
+                  text: "Cancel",
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildContent(List<Todo> todos) {
+    return todos.isEmpty
+        ? const Center(
+            child: Text('Yapılacak iş kalmadı'),
+          )
+        : ListView.builder(
+            itemCount: todos.length,
+            itemBuilder: (context, index) {
+              return Dismissible(
+                //confirmDismiss: ,
+                onDismissed: (direction) {
+                  deleteTodo(todos[index]);
+                },
+                background: Container(
+                  color: Theme.of(context).canvasColor,
+                  alignment: Alignment.centerRight,
+                  padding: const EdgeInsets.all(25),
+                  margin: const EdgeInsets.all(25),
+                  child: const Icon(Icons.delete),
+                ),
+                key: UniqueKey(),
+                child: ToDoTile(
+                  taskName: todos[index].title,
+                  isTaskCompleted: todos[index].isCompleted,
+                  onChanged: (value) {
+                    checkBoxChanged(todos[index]);
+                  },
+                ),
+              );
+            },
+          );
+  }
+
+  void checkBoxChanged(Todo todo) {
+    setState(() {
+      todo.isCompleted = !todo.isCompleted;
+    });
+  }
+
+  void deleteTodo(Todo todo) {
+    setState(() {
+      _hiveDatabaseService.deleteTodo(todo);
+    });
   }
 }

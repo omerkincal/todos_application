@@ -3,24 +3,53 @@
 part of 'todo.dart';
 
 // **************************************************************************
-// JsonSerializableGenerator
+// TypeAdapterGenerator
 // **************************************************************************
 
-_$TodoImpl _$$TodoImplFromJson(Map<String, dynamic> json) => _$TodoImpl(
-      id: json['id'] as int,
-      title: json['title'] as String,
-      description: json['description'] as String,
-      isCompleted: json['isCompleted'] as bool,
-      priority: json['priority'] as int,
-      dueDate: DateTime.parse(json['dueDate'] as String),
-    );
+class TodoAdapter extends TypeAdapter<Todo> {
+  @override
+  final int typeId = 0;
 
-Map<String, dynamic> _$$TodoImplToJson(_$TodoImpl instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'title': instance.title,
-      'description': instance.description,
-      'isCompleted': instance.isCompleted,
-      'priority': instance.priority,
-      'dueDate': instance.dueDate.toIso8601String(),
+  @override
+  Todo read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
+    return Todo()
+      ..id = fields[0] as int
+      ..title = fields[1] as String
+      ..description = fields[2] as String
+      ..isCompleted = fields[3] as bool
+      ..priority = fields[4] as int
+      ..dueDate = fields[5] as DateTime;
+  }
+
+  @override
+  void write(BinaryWriter writer, Todo obj) {
+    writer
+      ..writeByte(6)
+      ..writeByte(0)
+      ..write(obj.id)
+      ..writeByte(1)
+      ..write(obj.title)
+      ..writeByte(2)
+      ..write(obj.description)
+      ..writeByte(3)
+      ..write(obj.isCompleted)
+      ..writeByte(4)
+      ..write(obj.priority)
+      ..writeByte(5)
+      ..write(obj.dueDate);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TodoAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}

@@ -1,7 +1,7 @@
 // presentation/controllers/todo_controller.dart
 import 'package:flutter/widgets.dart';
-import 'package:todos_application/data/datasources/local/hive_datasources.dart';
 
+import '../../data/datasources/local/hive_datasources.dart';
 import '../../data/repositories/todo_repository.dart';
 import '../../domain/entites/todo_entity.dart';
 import '../../domain/usecases/get_todo_by_id.dart';
@@ -18,7 +18,7 @@ class TodoController extends ChangeNotifier {
   // );
 
   TodoController(TodoRepository todoRepository,
-      [HiveDataSource? hiveDataSource] // Bu repository parametresi
+      [HiveDatabaseService? hiveDataSource] // Bu repository parametresi
       )
       : _getTodosUseCase = GetTodosUseCase(todoRepository),
         _saveTodoUseCase = SaveTodoUseCase(todoRepository);
