@@ -1,7 +1,7 @@
 // presentation/controllers/todo_controller.dart
 import 'package:flutter/widgets.dart';
 
-import '../../data/datasources/local/hive_datasources.dart';
+import '../../core/services/hive_database_service.dart';
 import '../../data/repositories/todo_repository.dart';
 import '../../domain/entites/todo_entity.dart';
 import '../../domain/usecases/get_todo_by_id.dart';

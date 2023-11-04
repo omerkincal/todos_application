@@ -28,6 +28,11 @@ class App extends StatelessWidget {
       ),
       darkTheme: ThemeData.dark(
         useMaterial3: true,
+      ).copyWith(
+        appBarTheme: const AppBarTheme(
+          color: Colors.black26,
+          centerTitle: true,
+        ),
       ),
       home: const HomeView(),
     );

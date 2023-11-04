@@ -1,6 +1,6 @@
 import '../../domain/entites/todo_entity.dart';
 import '../../domain/repositeries/todo_repository_interface.dart';
-import '../datasources/local/hive_datasources.dart';
+import '../../core/services/hive_database_service.dart';
 import '../models/todo.dart';
 
 class TodoRepository implements TodoRepositoryInterface {

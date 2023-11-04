@@ -3,7 +3,8 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:todos_application/data/datasources/local/hive_datasources.dart';
+import 'package:todos_application/core/enums/hive_box.dart';
+import 'package:todos_application/core/services/hive_database_service.dart';
 import 'package:todos_application/data/datasources/local/todos.dart';
 
 import '../../../data/models/todo.dart';
@@ -24,7 +25,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   void dispose() {
     // Hive.close();
-    Hive.box('todos').close();
+    Hive.box(BoxesEnum.todo_box.boxKey).clear();
     super.dispose();
   }
 

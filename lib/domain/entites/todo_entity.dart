@@ -1,4 +1,3 @@
-// domain/entities/todo_entity.dart
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'todo_entity.freezed.dart';
