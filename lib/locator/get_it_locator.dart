@@ -18,6 +18,6 @@ final class ServiceLocator {
 
     locator.registerLazySingleton<TodoAdapter>(() => TodoAdapter());
     locator.registerLazySingleton<HiveDatabaseService>(
-        () => HiveDatabaseService());
+        () => HiveDatabaseService(myBox: null));
   }
 }

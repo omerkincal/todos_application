@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todos_application/data/datasources/local/todos.dart';
 
 import 'presentation/blocs/theme_provider.dart';
 import 'presentation/features/home/home_view.dart';
@@ -34,7 +35,7 @@ class App extends StatelessWidget {
           centerTitle: true,
         ),
       ),
-      home: const HomeView(),
+      home: HomeView(todos: Boxes.getTodos()),
     );
   }
 }

@@ -13,15 +13,19 @@ import '../components/my_button.dart';
 import '../components/todo_tile.dart';
 
 class HomeView extends StatefulWidget {
-  const HomeView({super.key});
+  final Box<Todo>? todos;
+  final HiveDatabaseService _hiveDatabaseService;
+
+  HomeView({Key? key, required Box<Todo>? todos})
+      : todos = todos,
+        _hiveDatabaseService = HiveDatabaseService(myBox: todos),
+        super(key: key);
 
   @override
   State<HomeView> createState() => _HomeViewState();
 }
 
 class _HomeViewState extends State<HomeView> {
-  final HiveDatabaseService _hiveDatabaseService = HiveDatabaseService();
-
   @override
   void dispose() {
     // Hive.close();
@@ -100,7 +104,7 @@ class _HomeViewState extends State<HomeView> {
         ..dueDate = selectedDate
         ..priority = 1
         ..isCompleted = false;
-      _hiveDatabaseService.addNewTodo(newTodo);
+      widget._hiveDatabaseService.addNewTodo(newTodo);
       Navigator.pop(context);
     }
 
@@ -209,7 +213,7 @@ class _HomeViewState extends State<HomeView> {
 
   void deleteTodo(Todo todo) {
     setState(() {
-      _hiveDatabaseService.deleteTodo(todo);
+      widget._hiveDatabaseService.deleteTodo(todo);
     });
   }
 }
